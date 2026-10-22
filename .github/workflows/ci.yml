@@ -1,0 +1,51 @@
+name: CI
+
+# Runs on every pull request to main and on every push to main.
+# If any step fails, the pull request cannot merge (once a lead turns on the
+# branch rules in SETUP.md).
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# A new push to the same branch cancels the old run, so you only wait for the
+# newest one.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Installs the pnpm version named in package.json ("packageManager").
+      - uses: pnpm/action-setup@v6
+
+      # Same Node.js version as .nvmrc. Vercel must use the same major version
+      # (Project Settings -> Build and Deployment -> Node.js Version). Change
+      # them together.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # --frozen-lockfile fails if package.json and pnpm-lock.yaml disagree.
+      # Fix it on your computer with `pnpm install` and commit the lockfile.
+      - run: pnpm install --frozen-lockfile
+
+      # Fix on your computer with `pnpm format`.
+      - run: pnpm format:check
+
+      - run: pnpm lint
+
+      - run: pnpm typecheck
+
+      - run: pnpm test
+
+      - run: pnpm build

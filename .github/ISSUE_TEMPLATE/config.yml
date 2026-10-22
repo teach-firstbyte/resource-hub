@@ -1,0 +1,11 @@
+# Settings for the "New issue" page.
+
+# Hide the "Blank issue" option, so every issue uses a template.
+blank_issues_enabled: false
+
+# Links shown next to the templates. Add the team channel here so questions go
+# there, not into issues. Each link needs a name, a full URL and an about line.
+# contact_links:
+#   - name: Ask a question
+#     url: https://<team channel link>
+#     about: Not sure how something works? Ask in the team channel.

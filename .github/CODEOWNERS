@@ -1,0 +1,6 @@
+# CODEOWNERS: GitHub asks these people to review every pull request.
+# The owner is the website team lead. Change this when the lead changes.
+# Later: replace with a team, for example @teach-firstbyte/website-leads
+# (see SETUP.md, "Later").
+
+* @hecbatista

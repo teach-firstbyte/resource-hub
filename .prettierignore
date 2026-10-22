@@ -1,0 +1,11 @@
+.next
+out
+build
+coverage
+pnpm-lock.yaml
+next-env.d.ts
+
+# Skills copied from other repos. Keep them exactly as their source has them,
+# so updating is a plain copy. See .claude/skills/README.md.
+.claude/skills/shadcn
+.claude/skills/simple-english

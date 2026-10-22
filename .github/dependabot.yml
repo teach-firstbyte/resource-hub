@@ -1,0 +1,31 @@
+# Dependabot opens pull requests when a package has a new version. CI runs on
+# each one. If CI passes and the change looks safe, merge it.
+#
+# Small updates (minor and patch) are grouped into one pull request a week so
+# they don't flood the PR list. Major updates come one at a time, because they
+# can break things and need someone to read the release notes.
+version: 2
+updates:
+  - package-ecosystem: npm # this also covers pnpm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # @types/node must match the Node.js version the app runs on (.nvmrc,
+      # Vercel, CI). Newer types allow Node APIs that crash on Node 24. When
+      # you move to a new Node.js version, change .nvmrc, the Vercel setting,
+      # @types/node and this rule together.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
